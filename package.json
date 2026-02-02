@@ -2,12 +2,12 @@
   "name": "geoauth-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/server.ts",
     "prisma": "prisma",
     "seed": "ts-node prisma/seed.ts"
   },
@@ -28,6 +28,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.2.0",
+    "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
@@ -41,6 +42,8 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "prisma": "^7.3.0",
-    "validator": "^13.15.26"
+    "swagger-ui-express": "^5.0.1",
+    "validator": "^13.15.26",
+    "yaml": "^2.8.2"
   }
 }
