@@ -1,0 +1,211 @@
+openapi: 3.0.3
+
+info:
+  title: IP Geolocation API
+  description: >
+    Backend API for authentication, IP geolocation lookup, and search history.
+    Used by the React (Vite) frontend.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://your-backend-domain.com
+    description: Production
+
+tags:
+  - name: Auth
+    description: Authentication endpoints
+  - name: Geo
+    description: IP geolocation endpoints
+  - name: History
+    description: Search history management
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: test@example.com
+        password:
+          type: string
+          example: Password123!
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+    GeoResponse:
+      type: object
+      properties:
+        ip:
+          type: string
+          example: 8.8.8.8
+        city:
+          type: string
+          example: Mountain View
+        region:
+          type: string
+          example: California
+        country:
+          type: string
+          example: US
+        loc:
+          type: string
+          example: "37.3860,-122.0838"
+        org:
+          type: string
+          example: AS15169 Google LLC
+        timezone:
+          type: string
+          example: America/Los_Angeles
+
+    HistoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        ip:
+          type: string
+        geo:
+          $ref: "#/components/schemas/GeoResponse"
+        createdAt:
+          type: string
+          format: date-time
+
+    DeleteHistoryRequest:
+      type: object
+      required: [ids]
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid IP address
+
+paths:
+  /api/login:
+    post:
+      tags: [Auth]
+      summary: Login user
+      description: Authenticate user and return JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/geo/self:
+    get:
+      tags: [Geo]
+      summary: Get geolocation of logged-in user
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Geolocation retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeoResponse"
+        "401":
+          description: Unauthorized
+
+  /api/geo/{ip}:
+    get:
+      tags: [Geo]
+      summary: Get geolocation by IP address
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: ip
+          in: path
+          required: true
+          schema:
+            type: string
+          example: 8.8.8.8
+      responses:
+        "200":
+          description: Geolocation retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeoResponse"
+        "400":
+          description: Invalid IP address
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+
+  /api/history:
+    get:
+      tags: [History]
+      summary: Get IP search history
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: History list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HistoryItem"
+        "401":
+          description: Unauthorized
+
+    delete:
+      tags: [History]
+      summary: Delete multiple history items
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteHistoryRequest"
+      responses:
+        "200":
+          description: History deleted
+        "401":
+          description: Unauthorized
