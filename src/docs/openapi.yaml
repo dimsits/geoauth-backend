@@ -129,6 +129,92 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /api/register:
+    post:
+      tags: [Auth]
+      summary: Register user
+      description: >
+        Create a new user account.
+        Validates input, hashes password, inserts user.
+        Optionally returns a JWT token for immediate login.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: test@example.com
+                password:
+                  type: string
+                  example: Password123!
+      responses:
+        "201":
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                  email:
+                    type: string
+                    format: email
+                    example: test@example.com
+                  token:
+                    type: string
+                    description: Optional JWT returned on registration
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/me:
+    get:
+      tags: [Auth]
+      summary: Get current user
+      description: >
+        Returns the authenticated user's profile.
+        Commonly used for JWT validation on app startup.
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Authenticated user retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                  email:
+                    type: string
+                    format: email
+                    example: test@example.com
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/geo/self:
     get:
