@@ -3,6 +3,7 @@ import cors from "cors";
 import { setupSwagger } from "./docs/swagger";
 import AuthRoutes from "./routes/auth.routes";
 import GeoRoutes from "./routes/geo.routes";
+import HistoryRoutes from "./routes/history.routes";
 
 const app = express();
 
@@ -17,7 +18,8 @@ app.use(
 app.use(express.json());
 
 app.use("/api", AuthRoutes);
-app.use("/api", GeoRoutes);
+app.use("/api/geo", GeoRoutes);
+app.use("/api/history", HistoryRoutes);
 
 setupSwagger(app);
 
