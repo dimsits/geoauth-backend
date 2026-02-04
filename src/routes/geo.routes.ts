@@ -9,7 +9,7 @@ const router = Router();
  * Protected
  * Returns geolocation info for the current request
  */
-router.get("/geo/self", authMiddleware, geoSelfController);
-router.get("/geo/:ip", authMiddleware, geoByIpController);
+router.get("/self", authMiddleware, geoSelfController);
+router.get("/:ip", authMiddleware, geoByIpController);
 
 export default router;

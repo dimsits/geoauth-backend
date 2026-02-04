@@ -24,7 +24,7 @@ model SearchHistory {
   id        String   @id @default(uuid())
   userId    String
   ip        String
-  geo       Json
+  geo       Json?
   createdAt DateTime @default(now())
 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
