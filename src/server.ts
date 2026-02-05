@@ -1,12 +1,7 @@
 import dotenv from "dotenv";
 
-// Load correct env file BEFORE anything else
-const envFile =
-  process.env.NODE_ENV === "production"
-    ? ".env.production"
-    : ".env.development";
 
-dotenv.config({ path: envFile });
+dotenv.config({ path: ".env.local" });
 
 import app from "./app";
 

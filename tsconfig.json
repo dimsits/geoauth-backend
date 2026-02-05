@@ -1,11 +1,41 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    /* Language & runtime */
     "target": "ES2020",
-    "module": "commonjs",
+    "lib": ["ES2020"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+
+    /* Paths */
     "rootDir": "src",
     "outDir": "dist",
-    "strict": true,
+
+    /* Interop */
     "esModuleInterop": true,
-    "skipLibCheck": true
-  }
+    "resolveJsonModule": true,
+
+    /* Type safety */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Build behavior */
+    "skipLibCheck": true,
+    "noEmitOnError": true,
+    "sourceMap": false,
+
+    /* Node types */
+    "types": ["node"]
+  },
+
+  "include": [
+    "src/**/*.ts"
+  ],
+
+  "exclude": [
+    "node_modules",
+    "dist",
+    "prisma",
+    "prisma.config.ts"
+  ]
 }
