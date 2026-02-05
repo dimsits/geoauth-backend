@@ -10,7 +10,7 @@ info:
 servers:
   - url: http://localhost:3000
     description: Local development
-  - url: https://your-backend-domain.com
+  - url: https://geoauth-backend.onrender.com
     description: Production
 
 tags:
