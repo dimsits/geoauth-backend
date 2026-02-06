@@ -6,9 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev src/server.ts",
 
-    "build": "prisma generate && tsc -p tsconfig.json && npm run copy:docs && npm run build:seed",
+    "build": "prisma generate && tsc -p tsconfig.json && npm run copy:docs",
     "copy:docs": "cpy \"src/docs/*.yaml\" dist/docs --parents",
-    "build:seed": "tsc -p prisma/tsconfig.seed.json",
 
     "start": "node dist/server.js",
 
@@ -16,7 +15,7 @@
     "prisma:migrate:dev": "cross-env NODE_ENV=development prisma migrate dev",
     "prisma:migrate:prod": "cross-env NODE_ENV=production prisma migrate deploy",
 
-    "seed:prod": "node dist/prisma/seed.js",
+    "seed": "ts-node prisma/seed.ts",
 
     "postinstall": "prisma generate"
   },
@@ -35,6 +34,7 @@
     "@types/swagger-ui-express": "^4.1.8",
     "cpy-cli": "^6.0.0",
     "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   },
