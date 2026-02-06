@@ -1,4 +1,4 @@
-const IPINFO_BASE_URL = "https://ipinfo.io";
+const IPINFO_BASE_URL = "https://api.ipinfo.io";
 
 function getToken(): string {
   const token = process.env.IPINFO_TOKEN;
@@ -9,21 +9,17 @@ function getToken(): string {
 }
 
 /**
- * Raw IPInfo client.
- * - Makes HTTP request to ipinfo.io
- * - Returns raw JSON payload
- * - Throws on non-OK responses
+ * Raw IPInfo client (Lite API).
+ * - Calls: https://api.ipinfo.io/lite/<ip>?token=...
  */
 async function lookup(ip: string): Promise<Record<string, unknown>> {
   const token = getToken();
 
-  const url = `${IPINFO_BASE_URL}/${encodeURIComponent(ip)}?token=${token}`;
+  const url = `${IPINFO_BASE_URL}/lite/${encodeURIComponent(ip)}?token=${token}`;
 
   const res = await fetch(url, {
     method: "GET",
-    headers: {
-      Accept: "application/json",
-    },
+    headers: { Accept: "application/json" },
   });
 
   if (!res.ok) {
@@ -31,12 +27,8 @@ async function lookup(ip: string): Promise<Record<string, unknown>> {
     throw new Error(`IPInfo request failed (${res.status}): ${text}`);
   }
 
-  const data = (await res.json()) as Record<string, unknown>;
-  return data;
+  return (await res.json()) as Record<string, unknown>;
 }
 
-export const ipinfoClient = {
-  lookup,
-};
-
+export const ipinfoClient = { lookup };
 export default ipinfoClient;
