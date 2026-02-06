@@ -7,6 +7,7 @@
     "dev": "cross-env NODE_ENV=development ts-node-dev src/server.ts",
 
     "build": "prisma generate && tsc -p tsconfig.json && npm run copy:docs && npm run build:seed",
+    "copy:docs": "cpy \"src/docs/*.yaml\" dist/docs --parents",
     "build:seed": "tsc -p prisma/tsconfig.seed.json",
 
     "start": "node dist/server.js",
