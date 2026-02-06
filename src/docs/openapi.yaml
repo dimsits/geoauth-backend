@@ -54,24 +54,27 @@ components:
         ip:
           type: string
           example: 8.8.8.8
-        city:
+        asn:
           type: string
-          example: Mountain View
-        region:
+          example: AS15169
+        as_name:
           type: string
-          example: California
-        country:
+          example: Google LLC
+        as_domain:
+          type: string
+          example: google.com
+        country_code:
           type: string
           example: US
-        loc:
+        country:
           type: string
-          example: "37.3860,-122.0838"
-        org:
+          example: United States
+        continent_code:
           type: string
-          example: AS15169 Google LLC
-        timezone:
+          example: NA
+        continent:
           type: string
-          example: America/Los_Angeles
+          example: North America
 
     HistoryItem:
       type: object
